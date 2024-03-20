@@ -5,7 +5,7 @@ The MediMate is a user-friendly solution to remembering upcoming medication. Put
 ## How can I do this?
 You will need:
 
-* x1 Computer
+* x1 A device capable of running Python 3 and above.
 * x1 Copy of Python
 * x1 Audio Output
 
