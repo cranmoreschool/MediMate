@@ -1,8 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
+from ttkwidgets import DateEntry  # Import DateEntry from ttkwidgets
 import datetime
 import pygame.mixer
 import threading
+import time
 
 class MedicineReminderApp:
     def __init__(self, root):
@@ -10,11 +12,11 @@ class MedicineReminderApp:
         self.root.title("MediMate Reminder")
         self.root.geometry("400x300")
 
-        self.label = tk.Label(root, text="Select the date and time for your medicine reminder (mm-dd-yyyy):", font=("Helvetica", 12))
+        self.label = tk.Label(root, text="Select the date and time for your medicine reminder (dd-mm-yyyy):", font=("Helvetica", 12))
         self.label.pack(pady=10)
 
         # Calendar widget
-        self.cal = ttk.Calendar(root, selectmode="day", date_pattern="dd-mm-yyyy") # change accordingly, if you were American or Chinese it would be different
+        self.cal = DateEntry(root, date_pattern="dd-mm-yyyy")  # Use DateEntry from ttkwidgets
         self.cal.pack(pady=10)
 
         # Time selection
@@ -44,7 +46,7 @@ class MedicineReminderApp:
         self.set_button.pack(pady=10)
 
         # Button for testing reminder
-        self.test_button = tk.Button(root, text="TEST Reminder", command=self.test_reminder) # Used to test the reminder, good for debugging and making sure program is functional.
+        self.test_button = tk.Button(root, text="TEST Reminder", command=self.test_reminder)
         self.test_button.pack(pady=5)
 
         self.quit_button = tk.Button(root, text="Quit", command=root.quit)
@@ -56,7 +58,7 @@ class MedicineReminderApp:
         minute = int(self.minute_var.get())
         day_of_week = self.day_var.get()
 
-        reminder_datetime = datetime.datetime.strptime(selected_date, "%Y-%m-%d").replace(hour=hour, minute=minute)
+        reminder_datetime = datetime.datetime.strptime(selected_date, "%d-%m-%Y").replace(hour=hour, minute=minute)
 
         # Adjust reminder date to the next occurrence of the selected day of the week
         while reminder_datetime.strftime('%A') != day_of_week:
