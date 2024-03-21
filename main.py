@@ -9,7 +9,7 @@ class MedicineReminderApp:
         self.root.title("MediMate Reminder")
         self.root.geometry("400x300")
 
-        self.label = tk.Label(root, text="Select the date and time for your medicine reminder (dd-mm-yyyy):", font=("Helvetica", 12))
+        self.label = tk.Label(root, text="Select the date and time for your medicine reminder:", font=("Helvetica", 12))
         self.label.pack(pady=10)
 
         # Calendar widget
