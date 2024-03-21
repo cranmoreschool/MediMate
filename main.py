@@ -1,6 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
-from ttkwidgets import DateEntry
+from tkcalendar import Calendar
 import datetime
 import pygame.mixer
 
@@ -14,10 +13,10 @@ class MedicineReminderApp:
         self.label.pack(pady=10)
 
         # Calendar widget
-        self.cal = DateEntry(root, date_pattern="dd-mm-yyyy")
+        self.cal = Calendar(root, selectmode="day", date_pattern="dd-mm-yyyy")
         self.cal.pack(pady=10)
 
-        # Time selection
+        # Time selection (unchanged)
         self.time_label = tk.Label(root, text="Select the time:")
         self.time_label.pack()
         self.hour_var = tk.StringVar()
@@ -31,7 +30,7 @@ class MedicineReminderApp:
         self.minute_entry = tk.Entry(root, textvariable=self.minute_var, width=2)
         self.minute_entry.pack(side=tk.LEFT)
 
-        # Day selection for recurring reminder
+        # Day selection for recurring reminder (unchanged)
         self.recur_label = tk.Label(root, text="Select the day for recurring reminder:")
         self.recur_label.pack()
         self.day_var = tk.StringVar()
@@ -39,11 +38,11 @@ class MedicineReminderApp:
         self.day_option_menu = tk.OptionMenu(root, self.day_var, "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
         self.day_option_menu.pack(pady=5)
 
-        # Button to set reminder
+        # Button to set reminder (unchanged)
         self.set_button = tk.Button(root, text="Set Reminder", command=self.set_reminder)
         self.set_button.pack(pady=10)
 
-        # Button for testing reminder
+        # Button for testing reminder (unchanged)
         self.test_button = tk.Button(root, text="TEST Reminder", command=self.test_reminder)
         self.test_button.pack(pady=5)
 
@@ -51,7 +50,7 @@ class MedicineReminderApp:
         self.quit_button.pack()
 
     def set_reminder(self):
-        selected_date = self.cal.get()
+        selected_date = self.cal.get_date()
         hour = int(self.hour_var.get())
         minute = int(self.minute_var.get())
         day_of_week = self.day_var.get()
