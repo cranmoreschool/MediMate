@@ -7,9 +7,9 @@ class MedicineReminderApp:
     def __init__(self, root):
         self.root = root
         self.root.title("MediMate Reminder")
-        self.root.geometry("400x300")
+        self.root.geometry("400x450")
 
-        self.label = tk.Label(root, text="Select the date and time for your medicine reminder (dd-mm-yyyy):", font=("Helvetica", 12))
+        self.label = tk.Label(root, text="Select the date and time for your medicine reminder:", font=("Helvetica", 12))
         self.label.pack(pady=10)
 
         # Calendar widget
@@ -81,15 +81,15 @@ class MedicineReminderApp:
     def show_reminder(self):
         self.play_sound()
         reminder_window = tk.Toplevel(self.root)
-        reminder_window.title("Reminder")
+        reminder_window.title("Reminder!")
         reminder_window.geometry("300x100")
         reminder_label = tk.Label(reminder_window, text="It's time to take your medicine!", font=("Helvetica", 12))
         reminder_label.pack(pady=20)
-        dismiss_button = tk.Button(reminder_window, text="Dismiss", command=reminder_window.destroy)
+        dismiss_button = tk.Button(reminder_window, text="Dismiss, I have taken it.", command=reminder_window.destroy)
         dismiss_button.pack()
 
     def test_reminder(self):
-        self.set_reminder()
+        self.show_reminder()
 
     def play_sound(self):
         pygame.mixer.init()
