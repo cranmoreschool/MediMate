@@ -9,25 +9,29 @@ class MedicineReminderApp:
         self.root.title("MediMate Reminder")
         self.root.geometry("400x300")
 
-        self.label = tk.Label(root, text="Select the date and time for your medicine reminder:", font=("Helvetica", 12))
+        self.label = tk.Label(root, text="Select the date and time for your medicine reminder (dd-mm-yyyy):", font=("Helvetica", 12))
         self.label.pack(pady=10)
 
         # Calendar widget
         self.cal = Calendar(root, selectmode="day", date_pattern="dd-mm-yyyy")
         self.cal.pack(pady=10)
 
-        # Time selection (unchanged)
-        self.time_label = tk.Label(root, text="Select the time:")
-        self.time_label.pack()
+        # Frame for time selection
+        self.time_frame = tk.Frame(root)
+        self.time_frame.pack(pady=5)
+
+        # Time selection
+        self.time_label = tk.Label(self.time_frame, text="Select the time:")
+        self.time_label.pack(side=tk.LEFT)
         self.hour_var = tk.StringVar()
         self.minute_var = tk.StringVar()
         self.hour_var.set("12")
         self.minute_var.set("00")
-        self.hour_entry = tk.Entry(root, textvariable=self.hour_var, width=2)
+        self.hour_entry = tk.Entry(self.time_frame, textvariable=self.hour_var, width=2)
         self.hour_entry.pack(side=tk.LEFT)
-        self.colon_label = tk.Label(root, text=":")
+        self.colon_label = tk.Label(self.time_frame, text=":")
         self.colon_label.pack(side=tk.LEFT)
-        self.minute_entry = tk.Entry(root, textvariable=self.minute_var, width=2)
+        self.minute_entry = tk.Entry(self.time_frame, textvariable=self.minute_var, width=2)
         self.minute_entry.pack(side=tk.LEFT)
 
         # Day selection for recurring reminder (unchanged)
