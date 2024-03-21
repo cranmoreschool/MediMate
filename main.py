@@ -1,10 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
-from ttkwidgets import DateEntry  # Import DateEntry from ttkwidgets
+from ttkwidgets import DateEntry
 import datetime
 import pygame.mixer
-import threading
-import time
 
 class MedicineReminderApp:
     def __init__(self, root):
@@ -16,7 +14,7 @@ class MedicineReminderApp:
         self.label.pack(pady=10)
 
         # Calendar widget
-        self.cal = DateEntry(root, date_pattern="dd-mm-yyyy")  # Use DateEntry from ttkwidgets
+        self.cal = DateEntry(root, date_pattern="dd-mm-yyyy")
         self.cal.pack(pady=10)
 
         # Time selection
@@ -74,34 +72,25 @@ class MedicineReminderApp:
         # Calculate the time until the next reminder
         time_diff = reminder_datetime - now
 
-        # Calculate seconds until the next reminder
-        seconds_until_reminder = time_diff.total_seconds()
+        # Schedule the reminder using tkinter's after method
+        self.root.after(int(time_diff.total_seconds() * 1000), self.show_reminder)
 
-        # Set a recurring reminder for the selected day of the week
-        while True:
-            if seconds_until_reminder > 0:
-                # Wait until it's time for the reminder
-                time.sleep(seconds_until_reminder)
-                self.play_sound()
-                reminder_window = tk.Toplevel(self.root)
-                reminder_window.title("Reminder")
-                reminder_window.geometry("300x100")
-                reminder_label = tk.Label(reminder_window, text="It's time to take your medicine!", font=("Helvetica", 12))
-                reminder_label.pack(pady=20)
-                dismiss_button = tk.Button(reminder_window, text="Dismiss", command=reminder_window.destroy)
-                dismiss_button.pack()
-
-            # Adjust reminder date for next week
-            reminder_datetime += datetime.timedelta(weeks=1)
-            seconds_until_reminder = (reminder_datetime - datetime.datetime.now()).total_seconds()
+    def show_reminder(self):
+        self.play_sound()
+        reminder_window = tk.Toplevel(self.root)
+        reminder_window.title("Reminder")
+        reminder_window.geometry("300x100")
+        reminder_label = tk.Label(reminder_window, text="It's time to take your medicine!", font=("Helvetica", 12))
+        reminder_label.pack(pady=20)
+        dismiss_button = tk.Button(reminder_window, text="Dismiss", command=reminder_window.destroy)
+        dismiss_button.pack()
 
     def test_reminder(self):
-        test_thread = threading.Thread(target=self.set_reminder)
-        test_thread.start()
+        self.set_reminder()
 
     def play_sound(self):
         pygame.mixer.init()
-        pygame.mixer.music.load("beep.wav")  # Replace "beep.wav" with path to sound file
+        pygame.mixer.music.load("beep.wav")
         pygame.mixer.music.play()
 
 def main():
