@@ -1,5 +1,5 @@
 pygame
-tkinter
+tk
 datetime
 threading
 ttkwidgets
