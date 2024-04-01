@@ -9,7 +9,7 @@ class MedicineReminderApp:
         self.root.title("MediMate Reminder")
         self.root.geometry("400x450")
 
-        self.label = tk.Label(root, text="Select the date and time for your medicine reminder:", font=("Helvetica", 12))
+        self.label = tk.Label(root, text="Select the date and time for your medicine reminder:", font=("Helvetica", 10))
         self.label.pack(pady=10)
 
         # Calendar widget
@@ -34,7 +34,7 @@ class MedicineReminderApp:
         self.minute_entry = tk.Entry(self.time_frame, textvariable=self.minute_var, width=2)
         self.minute_entry.pack(side=tk.LEFT)
 
-        # Day selection for recurring reminder (unchanged)
+        # Day selection for recurring reminder
         self.recur_label = tk.Label(root, text="Select the day for recurring reminder:")
         self.recur_label.pack()
         self.day_var = tk.StringVar()
@@ -42,41 +42,44 @@ class MedicineReminderApp:
         self.day_option_menu = tk.OptionMenu(root, self.day_var, "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
         self.day_option_menu.pack(pady=5)
 
-        # Button to set reminder (unchanged)
+        # Button to set reminder
         self.set_button = tk.Button(root, text="Set Reminder", command=self.set_reminder)
-        self.set_button.pack(pady=10)
-
-        # Button for testing reminder (unchanged)
-        self.test_button = tk.Button(root, text="TEST Reminder", command=self.test_reminder)
-        self.test_button.pack(pady=5)
+        self.set_button.pack(pady=5)
 
         self.quit_button = tk.Button(root, text="Quit", command=root.quit)
         self.quit_button.pack()
 
     def set_reminder(self):
-        selected_date = self.cal.get_date()
-        hour = int(self.hour_var.get())
-        minute = int(self.minute_var.get())
-        day_of_week = self.day_var.get()
+        try:
+            selected_date = self.cal.get_date()
+            hour = int(self.hour_var.get())
+            minute = int(self.minute_var.get())
+            day_of_week = self.day_var.get()
 
-        reminder_datetime = datetime.datetime.strptime(selected_date, "%d-%m-%Y").replace(hour=hour, minute=minute)
+            # Validate hour and minute input
+            if not (0 <= hour < 24) or not (0 <= minute < 60):
+                raise ValueError("Invalid time input")
 
-        # Adjust reminder date to the next occurrence of the selected day of the week
-        while reminder_datetime.strftime('%A') != day_of_week:
-            reminder_datetime += datetime.timedelta(days=1)
+            reminder_datetime = datetime.datetime.strptime(selected_date, "%d-%m-%Y").replace(hour=hour, minute=minute)
 
-        now = datetime.datetime.now()
-        time_diff = reminder_datetime - now
+            # Adjust reminder date to the next occurrence of the selected day of the week
+            while reminder_datetime.strftime('%A') != day_of_week:
+                reminder_datetime += datetime.timedelta(days=1)
 
-        if time_diff.total_seconds() < 0:
-            # If the selected date has already passed, add a week to the reminder
-            reminder_datetime += datetime.timedelta(weeks=1)
+            now = datetime.datetime.now()
+            time_diff = reminder_datetime - now
 
-        # Calculate the time until the next reminder
-        time_diff = reminder_datetime - now
+            if time_diff.total_seconds() < 0:
+                # If the selected date has already passed, add a week to the reminder
+                reminder_datetime += datetime.timedelta(weeks=1)
 
-        # Schedule the reminder using tkinter's after method
-        self.root.after(int(time_diff.total_seconds() * 1000), self.show_reminder)
+            # Calculate the time until the next reminder
+            time_diff = reminder_datetime - now
+
+            # Schedule the reminder using tkinter's after method
+            self.root.after(int(time_diff.total_seconds() * 1000), self.show_reminder)
+        except ValueError as e:
+            tk.messagebox.showerror("Error", str(e))
 
     def show_reminder(self):
         self.play_sound()
